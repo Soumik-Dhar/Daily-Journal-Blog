@@ -1,0 +1,4 @@
+# environment variables like api keys
+.env
+# external node_modules
+node_modules/
