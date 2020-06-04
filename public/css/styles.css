@@ -3,7 +3,11 @@ body {
   position: relative;
 }
 
-p {
+span {
+  font-size: 1.5rem;
+}
+
+p, span {
   padding-left: 1rem;
 }
 

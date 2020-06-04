@@ -6,8 +6,11 @@
 <% for (const post of posts) { %>
   <h1><%= post.postTitle %></h1>
   <p>
-    <%= post.postBody.slice(0, 200) + " ..." %>
+    <%= post.postBody.slice(0, 250) + " ... " %>
     <a href="/posts/<%= post.postTitle %>">Read More</a>
+    <form action="/" method="post">
+      <button type="submit" class="btn btn-sm btn-danger" name="title" value="<%= post.postTitle %>">Delete</button>
+    </form>
   </p>
 <% }; %>
 
