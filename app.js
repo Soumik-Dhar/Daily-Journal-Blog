@@ -26,16 +26,32 @@ app.get("/", function(req, res) {
   });
 });
 
-// handling POST request from home route
-app.post("/", function(req, res) {
-  // deleting post at matching index and redirecting to home route
-  for (let i = 0; i < posts.length; i++) {
-    if (req.body.title === posts[i].postTitle) {
-      posts.splice(i, 1);
+// handling GET request to custom routes
+app.get("/posts/:postTitle", function(req, res) {
+  // converting postTitle in route parameter to lowercase minus special characters and spaces
+  const paramTitle = stringOps.toLowerAlphaNum(req.params.postTitle);
+  // looping through each post in posts array
+  for (const post of posts) {
+    // getting post title and content
+    const title = post.postTitle;
+    // replacing newlines in post content with <br> tag for formatting
+    const content = stringOps.repNewLine(post.postBody);
+    // converting postTitle in posts array to lowercase minus special characters and spaces
+    const blogTitle = stringOps.toLowerAlphaNum(title);
+    // rendering post if post title in url matches that in posts array
+    if (paramTitle === blogTitle) {
+      res.render("post", {
+        postTitle: title,
+        postBody: content
+      });
       break;
     }
+    // redirecting to home route if post titles do not match
+    else {
+      console.log("No posts found!");
+      res.redirect("/");
+    }
   }
-  res.redirect("/");
 });
 
 // handling GET request to about route
@@ -63,34 +79,6 @@ app.post("/compose", function(req, res) {
   // pushing title and content of new post to posts array
   posts.push(postData);
   res.redirect("/");
-});
-
-// handling routing parameters for new posts
-app.get("/posts/:postTitle", function(req, res) {
-  // converting postTitle in route parameter to lowercase minus special characters and spaces
-  const paramTitle = stringOps.toLowerAlphaNum(req.params.postTitle);
-  // looping through each post in posts array
-  for (const post of posts) {
-    // getting post title and content
-    const title = post.postTitle;
-    // replacing newlines in post content with <br> tag for formatting
-    const content = stringOps.repNewLine(post.postBody);
-    // converting postTitle in posts array to lowercase minus special characters and spaces
-    const blogTitle = stringOps.toLowerAlphaNum(title);
-    // rendering post if post title in url matches that in posts array
-    if (paramTitle === blogTitle) {
-      res.render("post", {
-        postTitle: title,
-        postBody: content
-      });
-      break;
-    }
-    // redirecting to home route if post titles do not match
-    else {
-      console.log("No posts found!");
-      res.redirect("/");
-    }
-  }
 });
 
 // starting server on PORT
