@@ -11,8 +11,39 @@ p, span {
   padding-left: 1rem;
 }
 
+h2 a {
+  color: #000;
+}
+
+h2 a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+a, button {
+  color: #12836d;
+}
+
+button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+}
+
+button:focus {
+  outline: none;
+}
+
+.edit {
+  margin-left: 1rem;
+}
+
+.home-form {
+  display: inline-block;
+}
+
 .btn {
-  background-color: #1abc9c;
+  background-color: #12836d;
   border: none;
 }
 
@@ -30,7 +61,7 @@ p, span {
 }
 
 .navbar-brand, .compose {
-  color: #1abc9c !important;
+  color: #12836d !important;
 }
 
 .footer-padding {
@@ -43,7 +74,7 @@ p, span {
   bottom: 0;
   width: 100%;
   height: 3rem;
-  background-color: #1abc9c;
+  background-color: #12836d;
 }
 
 .footer p {

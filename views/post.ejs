@@ -1,6 +1,17 @@
 <%- include("partials/header"); -%>
 
-<h1><%= title %></h1>
+<h2>
+  <%= title %>
+
+  <form class="home-form" action="/edit" method="post">
+    <button type="submit" class="edit" name="edit" value="<%= id %>"><i class="las la-pencil-alt"></i></button>
+  </form>
+
+  <form class="home-form" action="/delete" method="post">
+    <button type="submit" name="delete" value="<%= id %>"><i class="las la-trash-alt"></i></button>
+  </form>
+
+</h2>
 <p><%- content %></p>
 
 <%- include("partials/footer"); -%>
