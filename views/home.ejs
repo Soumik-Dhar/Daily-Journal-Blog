@@ -1,29 +1,37 @@
 <%- include("partials/header"); -%>
 
-<h1>Home</h1>
-<p>Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices
-  tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus.
-  Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.</p>
+<h2>Home</h2>
+<p>&emsp;&emsp;&ensp;Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices
+  tincidunt arcu non sodales neque sodales ut.</p>
+<hr class="content-break">
 
 <% for (const post of posts) { %>
-<h2>
-  <a href="/posts/<%= post._id %>"><%= post.title %></a>
 
-  <form class="home-form" action="/edit" method="post">
-    <button type="submit" class="edit" name="edit" value="<%= post._id %>"><i class="las la-pencil-alt"></i></button>
+<div class="post">
+  <h3>
+    <a href="/posts/<%= post._id %>"><%= post.title %></a>
+  </h3>
+
+  <span>&ensp;<%- post.date %></span>
+
+  <form class="ud-form" action="/delete" method="post">
+    <button type="submit" class="btn btn-sm mr-3" name="delete" value="<%= post._id %>">Delete <i class="las la-trash-alt"></i></button>
   </form>
 
-  <form class="home-form" action="/delete" method="post">
-    <button type="submit" name="delete" value="<%= post._id %>"><i class="las la-trash-alt"></i></button>
+  <form class="ud-form" action="/edit" method="post">
+    <button type="submit" class="btn btn-sm mr-2" name="edit" value="<%= post._id %>">Edit <i class="las la-pencil-alt"></i></button>
   </form>
 
-</h2>
+  <%  if(post.content.length > 200) { post.content = post.content.slice(0, 200) + " ... "; } %>
+  <p>
+    &emsp;&emsp;&ensp;
+    <%= post.content %>
+    <a href="/posts/<%= post._id %>">Read More</a>
+  </p>
 
-<%  if(post.content.length > 200) { post.content = post.content.slice(0, 200) + " ... "; } %>
-<p>
-  <%= post.content %>
-  <a href="/posts/<%= post._id %>">Read More</a>
-</p>
+  <hr>
+</div>
+
 <% }; %>
 
 <%- include("partials/footer"); -%>

@@ -2,7 +2,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const stringOps = require(__dirname + "/string-ops.js");
+const date = require(__dirname + "/date.js");
 
 // setting up mongodb server URL
 const URL = "mongodb://localhost:27017/journalDB";
@@ -18,7 +18,9 @@ const PORT = (process.env.PORT || 3000);
 // creating schema and model for posts
 const postSchema = {
   title: String,
-  content: String
+  content: String,
+  date: String,
+  time: Number
 };
 const Post = mongoose.model("Post", postSchema);
 
@@ -45,7 +47,12 @@ function reroute(err, docs, route, res) {
 // handling GET request to home route
 app.get("/", function(req, res) {
   // finding all documents in posts collection
-  Post.find(function(err, posts) {
+  Post.find({}, null, {
+    // sorting documents based on time modified (desc)
+    sort: {
+      time: -1
+    }
+  }, function(err, posts) {
     if (!err) {
       res.render("home", {
         posts: posts
@@ -65,7 +72,8 @@ app.get("/posts/:postId", function(req, res) {
       res.render("post", {
         title: post.title,
         // replacing newlines in post content with <br> tag for formatting
-        content: stringOps.repNewLine(post.content),
+        content: date.repNewLine(post.content),
+        date: post.date,
         id: id
       });
     }
@@ -91,10 +99,14 @@ app.get("/compose", function(req, res) {
 app.post("/compose", function(req, res) {
   // storing data from submitted form
   const formData = req.body;
-  // storing title and content of submitted post in a new document
+  // getting date and time when the post is published
+  const dateModified = date.getDate("compose");
+  // storing title, content and date of submitted post in a new document
   const post = new Post({
     title: formData.title,
-    content: formData.content
+    content: formData.content,
+    date: dateModified,
+    time: date.getNow()
   });
   // inserting the document into posts collection
   post.save(function(err, docs) {
@@ -104,7 +116,7 @@ app.post("/compose", function(req, res) {
   });
 });
 
-// handling GET request from home route
+// handling POST request to edit route
 app.post("/edit", function(req, res) {
   // storing post ID from submitted form
   const id = req.body.edit;
@@ -121,15 +133,20 @@ app.post("/edit", function(req, res) {
   });
 });
 
+// handling POST request to update route
 app.post("/update", function(req, res) {
   // storing data from submitted form
   const formData = req.body;
   // storing post ID of updated post
   const id = formData.postId
-  // storing title and content of updated post
+  // getting date and time when the post is updated
+  const dateModified = date.getDate("update");
+  // storing title, content and date of updated post
   const post = {
     title: formData.title,
-    content: formData.content
+    content: formData.content,
+    date: dateModified,
+    time: date.getNow()
   };
   // updating document in posts collection with matching ID
   Post.findByIdAndUpdate(id, post, {
@@ -142,6 +159,7 @@ app.post("/update", function(req, res) {
   });
 });
 
+// handling POST request to delete route
 app.post("/delete", function(req, res) {
   // storing post ID from submitted form
   const id = req.body.delete;

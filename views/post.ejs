@@ -1,17 +1,19 @@
 <%- include("partials/header"); -%>
 
-<h2>
+<h3>
   <%= title %>
+</h3>
 
-  <form class="home-form" action="/edit" method="post">
-    <button type="submit" class="edit" name="edit" value="<%= id %>"><i class="las la-pencil-alt"></i></button>
-  </form>
+<span>&ensp;<%- date %></span>
 
-  <form class="home-form" action="/delete" method="post">
-    <button type="submit" name="delete" value="<%= id %>"><i class="las la-trash-alt"></i></button>
-  </form>
+<form class="ud-form" action="/delete" method="post">
+  <button type="submit" class="btn btn-sm" name="delete" value="<%= id %>">Delete <i class="las la-trash-alt"></i></button>
+</form>
 
-</h2>
+<form class="ud-form" action="/edit" method="post">
+  <button type="submit" class="btn btn-sm mr-2" name="edit" value="<%= id %>">Edit <i class="las la-pencil-alt"></i></button>
+</form>
+
 <p><%- content %></p>
 
 <%- include("partials/footer"); -%>
